@@ -258,8 +258,13 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let num2 = num;
+  while (num2 > 0) {
+    if (num2 % 10 === digit) return true;
+    num2 = Math.floor(num2 / 10);
+  }
+  return false;
 }
 
 /**
@@ -275,8 +280,17 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let s1 = 0;
+  let s2 = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    s1 = 0;
+    s2 = 0;
+    for (let j = 0; j < i; j += 1) s1 += arr[j];
+    for (let j = i + 1; j < arr.length; j += 1) s2 += arr[j];
+    if (s1 === s2) return i;
+  }
+  return -1;
 }
 
 /**
@@ -300,8 +314,39 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const arr = new Array(size).fill(null).map(() => new Array(size));
+  let context = {};
+  console.log(`размер: ${size}`);
+  let c = 1;
+  try {
+    for (let i = 0; i < Math.floor(size / 2); i += 1) {
+      for (let j = i; j < size; j += 1) {
+        context = { i, j };
+        arr[i][j] = c;
+        c += 1;
+      }
+      for (let j = i + 1; j < size; j += 1) {
+        context = { i, j };
+        arr[j][size - i] = c;
+        c += 1;
+      }
+      for (let j = size - 2 - i; j >= 0; j -= 1) {
+        context = { i, j };
+        arr[size - i][j] = c;
+        c += 1;
+      }
+      for (let j = size - 2 - i; j > 0; j -= 1) {
+        context = { i, j };
+        arr[j][i] = c;
+        c += 1;
+      }
+      console.log(arr);
+    }
+  } catch (error) {
+    console.log(context);
+  }
+  return arr;
 }
 
 /**
