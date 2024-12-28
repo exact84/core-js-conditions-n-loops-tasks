@@ -315,36 +315,28 @@ function getBalanceIndex(arr) {
  *        ]
  */
 function getSpiralMatrix(size) {
-  const arr = new Array(size).fill(null).map(() => new Array(size));
-  let context = {};
-  console.log(`размер: ${size}`);
+  const arr = [];
+  for (let i = 0; i < size; i += 1) {
+    arr[i] = new Array(size);
+  }
   let c = 1;
-  try {
-    for (let i = 0; i < Math.floor(size / 2); i += 1) {
-      for (let j = i; j < size; j += 1) {
-        context = { i, j };
-        arr[i][j] = c;
-        c += 1;
-      }
-      for (let j = i + 1; j < size; j += 1) {
-        context = { i, j };
-        arr[j][size - i] = c;
-        c += 1;
-      }
-      for (let j = size - 2 - i; j >= 0; j -= 1) {
-        context = { i, j };
-        arr[size - i][j] = c;
-        c += 1;
-      }
-      for (let j = size - 2 - i; j > 0; j -= 1) {
-        context = { i, j };
-        arr[j][i] = c;
-        c += 1;
-      }
-      console.log(arr);
+  for (let i = 0; i < Math.ceil(size / 2); i += 1) {
+    for (let j = i; j < size - i; j += 1) {
+      arr[i][j] = c;
+      c += 1;
     }
-  } catch (error) {
-    console.log(context);
+    for (let j = i + 1; j < size - i; j += 1) {
+      arr[j][size - i - 1] = c;
+      c += 1;
+    }
+    for (let j = size - 2 - i; j >= i; j -= 1) {
+      arr[size - i - 1][j] = c;
+      c += 1;
+    }
+    for (let j = size - 2 - i; j > i; j -= 1) {
+      arr[j][i] = c;
+      c += 1;
+    }
   }
   return arr;
 }
@@ -364,8 +356,27 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const n = matrix.length;
+  const arr = matrix;
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = i + 1; j < n; j += 1) {
+      const temp = arr[i][j];
+      arr[i][j] = arr[j][i];
+      arr[j][i] = temp;
+    }
+  }
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = 0; j < Math.floor(n / 2); j += 1) {
+      const temp = arr[i][j];
+      arr[i][j] = arr[i][n - j - 1];
+      arr[i][n - j - 1] = temp;
+    }
+  }
+
+  return arr;
 }
 
 /**
