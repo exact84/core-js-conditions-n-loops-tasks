@@ -477,7 +477,7 @@ function getNearestBigger(number) {
   const l = arr.length;
   let char = 0;
 
-  for (let i = l - 1; i > 0; i -= 1) {
+  for (let i = l - 1; i > 0; i -= 1)
     if (arr[i] > arr[i - 1]) {
       let iMin = i;
       for (let j = i + 1; j < l; j += 1)
@@ -487,19 +487,15 @@ function getNearestBigger(number) {
       arr[iMin] = char;
 
       const tempArr = [];
-      for (let j = i; j < l; j += 1) {
-        tempArr.push(arr[j]);
-      }
+      for (let j = i; j < l; j += 1) tempArr.push(arr[j]);
       tempArr.sort((a, b) => a - b);
 
       let result = 0;
       for (let j = 0; j < i; j += 1) result = result * 10 + arr[j];
-      for (let j = 0; j < tempArr.length; j += 1) {
+      for (let j = 0; j < tempArr.length; j += 1)
         result = result * 10 + tempArr[j];
-      }
       return result;
     }
-  }
   return number;
 }
 
