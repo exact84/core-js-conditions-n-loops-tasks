@@ -393,8 +393,30 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  function partition(tempArr, low, high) {
+    const arrS = tempArr;
+    const pivot = arrS[high];
+    let i = low - 1;
+    for (let j = low; j < high; j += 1) {
+      if (arrS[j] < pivot) {
+        i += 1;
+        [arrS[i], arrS[j]] = [arrS[j], arrS[i]];
+      }
+    }
+    [arrS[i + 1], arrS[high]] = [arrS[high], arrS[i + 1]];
+    return i + 1;
+  }
+
+  function quickSort(arrS, low = 0, high = arrS.length - 1) {
+    if (low < high) {
+      const pivotIndex = partition(arrS, low, high);
+      quickSort(arrS, low, pivotIndex - 1);
+      quickSort(arrS, pivotIndex + 1, high);
+    }
+  }
+
+  quickSort(arr);
 }
 
 /**
@@ -414,8 +436,18 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let str0 = str;
+  for (let i = 0; i < iterations; i += 1) {
+    let result = '';
+    let end = '';
+    for (let j = 0; j < str0.length; j += 1)
+      if (j % 2) end += str0[j];
+      else result += str0[j];
+    str0 = result + end;
+    if (str0 === str) i = Math.trunc(iterations / (i + 1)) * (i + 1) - 1;
+  }
+  return str0;
 }
 
 /**
@@ -435,8 +467,40 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const arr = [];
+  let n = number;
+  while (n > 0) {
+    arr.unshift(n % 10);
+    n = Math.floor(n / 10);
+  }
+  const l = arr.length;
+  let char = 0;
+
+  for (let i = l - 1; i > 0; i -= 1) {
+    if (arr[i] > arr[i - 1]) {
+      let iMin = i;
+      for (let j = i + 1; j < l; j += 1)
+        if (arr[j] > arr[i - 1] && arr[j] < arr[iMin]) iMin = j;
+      char = arr[i - 1];
+      arr[i - 1] = arr[iMin];
+      arr[iMin] = char;
+
+      const tempArr = [];
+      for (let j = i; j < l; j += 1) {
+        tempArr.push(arr[j]);
+      }
+      tempArr.sort((a, b) => a - b);
+
+      let result = 0;
+      for (let j = 0; j < i; j += 1) result = result * 10 + arr[j];
+      for (let j = 0; j < tempArr.length; j += 1) {
+        result = result * 10 + tempArr[j];
+      }
+      return result;
+    }
+  }
+  return number;
 }
 
 module.exports = {
